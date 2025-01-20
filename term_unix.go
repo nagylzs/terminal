@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/exec"
 
-	"fyne.io/fyne/v2"
 	"github.com/creack/pty"
 )
 
@@ -16,14 +15,9 @@ func (t *Terminal) updatePTYSize() {
 	if t.pty == nil { // SSH or other direct connection?
 		return
 	}
-	scale := float32(1.0)
-	c := fyne.CurrentApp().Driver().CanvasForObject(t)
-	if c != nil {
-		scale = c.Scale()
-	}
 	_ = pty.Setsize(t.pty.(*os.File), &pty.Winsize{
 		Rows: uint16(t.config.Rows), Cols: uint16(t.config.Columns),
-		X: uint16(t.Size().Width * scale), Y: uint16(t.Size().Height * scale)})
+		X: uint16(t.config.Width), Y: uint16(t.config.Height)})
 }
 
 func (t *Terminal) startPTY() (io.WriteCloser, io.Reader, io.Closer, error) {
