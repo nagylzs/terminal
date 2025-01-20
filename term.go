@@ -26,10 +26,9 @@ const (
 // Config is the state of a terminal, updated upon certain actions or commands.
 // Use Terminal.OnConfigure hook to register for changes.
 type Config struct {
-	Title                 string
-	Rows, Columns         uint // terminal size in characters
-	Width, Height         uint // terminal size in pixels
-	CellWidth, CellHeight uint // cell (character) size in pixels
+	Title         string
+	Rows, Columns uint // terminal size in characters
+	Width, Height uint // terminal size in pixels
 }
 
 type charSet int
@@ -246,7 +245,6 @@ func (t *Terminal) Resize(s fyne.Size) {
 
 	oldRows := int(t.config.Rows)
 	t.config.Width, t.config.Height = uint(s.Width*scale), uint(s.Height*scale)
-	t.config.CellWidth, t.config.CellHeight = uint(cellSize.Width*scale), uint(cellSize.Height*scale)
 	t.config.Columns, t.config.Rows = cols, rows
 	if t.scrollBottom == 0 || t.scrollBottom == oldRows-1 {
 		t.scrollBottom = int(t.config.Rows) - 1
